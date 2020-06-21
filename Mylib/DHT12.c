@@ -101,7 +101,7 @@ uint8_t I2C_Read(I2C_TypeDef *I2Cx, uint8_t I2C_Addr, uint8_t addr, uint8_t *buf
     
         while (!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_BYTE_RECEIVED)); /* EV7 */   /* // check if the next byte is received */
         *buf = I2C_ReceiveData(I2Cx); /* // white to reception Buffer */
-        buf++;				/* // and increment the index of the buffer in case of */
+        //buf++;				/* // and increment the index of the buffer in case of */
         /* // multibytes reception operation */
         num--; /* // Decrement the read bytes counter */
     }
