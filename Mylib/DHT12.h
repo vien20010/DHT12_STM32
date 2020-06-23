@@ -28,7 +28,7 @@ LV_Embedded
 #define SLAVE_ADDRESS 0xB8
 
 //define I2Cx Communication
-#define I2Cxx                     I2C1
+#define I2Cxx                    I2C1
 #define I2Cx_CLK                 RCC_APB1Periph_I2C1
 #define I2Cx_SDA_GPIO_CLK        RCC_AHB1Periph_GPIOB
 #define I2Cx_SDA_PIN             GPIO_Pin_7
