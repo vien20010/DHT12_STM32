@@ -1,5 +1,5 @@
 #include "DHT12.h"
-
+uint8_t buff=0;
 void I2C_Config(void)
 {
     GPIO_InitTypeDef GPIO_InitStructure;
@@ -75,6 +75,7 @@ void I2C_Config(void)
 
 uint8_t I2C_Read(I2C_TypeDef *I2Cx, uint8_t I2C_Addr, uint8_t addr, uint8_t *buf, uint16_t num)
 {
+    uint8_t i=0;
     if (num == 0)
         return 1;
 
@@ -90,6 +91,7 @@ uint8_t I2C_Read(I2C_TypeDef *I2Cx, uint8_t I2C_Addr, uint8_t addr, uint8_t *buf
     while (!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_MODE_SELECT)); /* check if MASTER mode for STM32 is selected */
     I2C_Send7bitAddress(I2Cx, I2C_Addr, I2C_Direction_Receiver); /* send self address to slave with RECEPTION MODE SELECT bit */
     while (!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED)); /* check if RECEIVER MODE SELECTED for STM32 */
+    
     while (num)
     { /* while number of bytes to receive (num) != 0 */
 
@@ -100,11 +102,13 @@ uint8_t I2C_Read(I2C_TypeDef *I2Cx, uint8_t I2C_Addr, uint8_t addr, uint8_t *buf
         }
     
         while (!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_BYTE_RECEIVED)); /* EV7 */   /* // check if the next byte is received */
-        *buf = I2C_ReceiveData(I2Cx); /* // white to reception Buffer */
-        //buf++;				/* // and increment the index of the buffer in case of */
+        *(buf+i) = I2C_ReceiveData(I2Cx); /* // white to reception Buffer */
+        i++;				/* // and increment the index of the buffer in case of */
         /* // multibytes reception operation */
         num--; /* // Decrement the read bytes counter */
     }
+    // I2C_GenerateSTOP(I2Cx, ENABLE);       /* // and generate end of communication */
+    
     
     I2C_AcknowledgeConfig(I2Cx, ENABLE); /* // enable acknowledge for next transmition session */
     
